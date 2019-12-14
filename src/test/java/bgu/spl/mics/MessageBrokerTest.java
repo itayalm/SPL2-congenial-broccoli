@@ -8,8 +8,7 @@ import bgu.spl.mics.example.subscribers.ExampleEventHandlerSubscriber;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageBrokerTest {
 
@@ -102,11 +101,53 @@ public class MessageBrokerTest {
         MB.subscribeBroadcast(B.getClass(),Sub);
         MB.sendBroadcast(B);
         try {
-            Message M = MB.awaitMessage(Sub);
+            assertEquals(true, MB.awaitMessage(Sub) != null );
         }
         catch(Exception e)
         {
             System.out.println(e);
+        }
+        MB.unregister(Sub);
+    }
+    /**
+     * Test method for MessageBrokerImpl sendEvent .
+     */
+    @Test public void testSendEvent() {
+        MB.register(Sub);
+        MB.subscribeEvent(E.getClass(), Sub);
+        Future<String> f = MB.sendEvent(E);
+        assertEquals(true, f != null);
+        MB.unregister(Sub);
+    }
+    /**
+     * Test method for MessageBrokerImpl register .
+     */
+    @Test public void testRegister() {
+        boolean b = false;
+        try{
+            MB.register(Sub);
+            assertTrue(!b);
+        }
+        catch (Exception e)
+        {
+            assertFalse(b);
+        }
+        MB.unregister(Sub);
+    }
+
+    /**
+     * Test method for MessageBrokerImpl unregister .
+     */
+    @Test public void testUnregister() {
+        MB.register(Sub);
+        try
+        {
+            MB.unregister(Sub);
+            assertTrue(true);
+        }
+        catch(Exception e)
+        {
+            assertFalse(false);
         }
     }
 
