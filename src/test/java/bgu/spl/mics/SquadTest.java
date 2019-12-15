@@ -32,6 +32,27 @@ public class SquadTest {
     }
 
     @Test
+    public void testReleaseAgents(){
+        sq.load(agents);
+        assertTrue(agents[0].isAvailable());
+        assertTrue(agents[1].isAvailable());
+        assertTrue(agents[2].isAvailable());
+        List<String> input = new ArrayList<String>();
+        input.add("007");
+        sq.releaseAgents(input);
+
+        assertFalse(agents[0].isAvailable());
+        assertTrue(agents[1].isAvailable());
+        assertTrue(agents[2].isAvailable());
+        input.remove("007");
+        input.add("0012");
+
+        assertFalse(agents[0].isAvailable());
+        assertTrue(agents[1].isAvailable());
+        assertFalse(agents[2].isAvailable());
+    }
+
+    @Test
     public void testGetAgentsNames(){
         sq.load(agents);
         List<String> input = new ArrayList<String>();
@@ -52,8 +73,19 @@ public class SquadTest {
     @Test
     public void testLoad(){
      sq.load(agents);
-     assertTrue(sq.getAgents());
-     agents[1].setSerialNumber("");
-     assertFalse(sq.getAgents());
+     List<String> input = new ArrayList<String>();
+     input.add("007");
+     assertTrue(sq.getAgents(input));
+     agents[0].setSerialNumber("");
+     assertFalse(sq.getAgents(input));
     }
+
+    @Test
+    public void testSendMission(){
+        sq.load(agents);
+        List<String> input = new ArrayList<String>();
+        input.add("007");
+        sq.sendAgents(input, 1000);
+    }
+
 }
