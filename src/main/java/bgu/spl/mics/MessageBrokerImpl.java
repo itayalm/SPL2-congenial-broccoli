@@ -1,5 +1,14 @@
 package bgu.spl.mics;
 
+import jdk.nashorn.internal.ir.Block;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 /**
  * The {@link MessageBrokerImpl class is the implementation of the MessageBroker interface.
  * Write your implementation here!
@@ -10,58 +19,127 @@ public class MessageBrokerImpl implements MessageBroker {
 	/**
 	 * Retrieves the single instance of this class.
 	 */
+	private static MessageBroker MB = new MessageBrokerImpl();
+
+	Map<Class<? extends Message> , BlockingQueue<Subscriber>> Topic;
+	Map<Event,Future> futures;
+	Map<Subscriber, BlockingQueue<Message>> Subscribers;
+	private MessageBrokerImpl()
+	{
+		Topic = new HashMap<>();
+		futures = new HashMap<>();
+		Subscribers = new HashMap<>();
+	}
+
 	public static MessageBroker getInstance() {
-		//TODO: Implement this
-		return null;
+		if (MB == null)
+		{
+			MB = new MessageBrokerImpl();
+		}
+		return MB;
 	}
 
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
-		// TODO Auto-generated method stub
+		BlockingQueue<Subscriber> Subs;
+		if (Topic.get(type) != null) {
+			Subs = Topic.get(type);
+			Subs.add(m);
+		}
+		else
+		{
+			Subs = new LinkedBlockingQueue<Subscriber>();
+			Subs.offer(m);
+			Topic.put(type, Subs);
+		}
 
 	}
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
-		// TODO Auto-generated method stub
+		BlockingQueue<Subscriber> Subs;
+		if (Topic.get(type) != null) {
+			Subs = Topic.get(type);
+			Subs.add(m);
+		}
+		else
+		{
+			Subs = new LinkedBlockingQueue<Subscriber>();
+			Subs.offer(m);
+			Topic.put(type, Subs);
+		}
 
 	}
 
 	@Override
 	public <T> void complete(Event<T> e, T result) {
-		// TODO Auto-generated method stub
+		Future<T> f;
+		try
+		{
+			f = futures.get(e);
+			f.resolve(result);
+		}
+		catch (Exception ex)
+		{}
 
 	}
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		// TODO Auto-generated method stub
+		if (Topic.get(b) != null) {
+			for (Subscriber s :
+					Topic.get(b)) {
+				Subscribers.get(s).offer(b);
+			}
+		}
 
 	}
 
 	
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
-		// TODO Auto-generated method stub
-		return null;
+		Future<T> f;
+		if (Topic.get(e) != null) {
+			Subscriber s = Topic.get(e).remove();
+			Topic.get(e).offer(s);
+			Subscribers.get(s).offer(e);
+			f  = futures.get(e);
+			return f;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	@Override
 	public void register(Subscriber m) {
-		// TODO Auto-generated method stub
-
+		if (m != null)
+			Subscribers.put(m,new LinkedBlockingQueue<Message>());
 	}
 
 	@Override
 	public void unregister(Subscriber m) {
-		// TODO Auto-generated method stub
-
+		if (Subscribers.get(m) != null) {
+			Subscribers.remove(m);
+			for (Map.Entry<Class<? extends Message> , BlockingQueue<Subscriber>> entry : Topic.entrySet()) {
+				entry.getValue().remove(m);
+			}
+		}
 	}
 
 	@Override
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
-		// TODO Auto-generated method stub
-		return null;
+		try
+		{
+			Message Mes = Subscribers.get(m).remove();
+			return Mes;
+		}
+		catch(Exception e)
+		{
+			throw new IllegalStateException(e);
+		}
+
 	}
 
 	
