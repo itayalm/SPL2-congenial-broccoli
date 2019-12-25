@@ -2,6 +2,9 @@ package bgu.spl.mics.application.passiveObjects;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Passive object representing the diary where all reports are stored.
@@ -14,6 +17,8 @@ import java.util.List;
 public class Diary {
 	private static Diary diary_singleton = new Diary();
 
+	private final AtomicBoolean lock;
+
 	private List<Report> reports;
 	private int total;
 
@@ -22,6 +27,7 @@ public class Diary {
 	 */
 	private Diary()
 	{
+		this.lock = new AtomicBoolean(false);
 		reports = new LinkedList<Report>();
 		total = 0;
 	}
@@ -41,9 +47,12 @@ public class Diary {
 	 * adds a report to the diary
 	 * @param reportToAdd - the report to add
 	 */
-	public void addReport(Report reportToAdd){ //CMNT synchronized??
-		reports.add(reportToAdd);
-		total++;
+	public void addReport(Report reportToAdd){
+		while(!lock.compareAndSet(false, true));
+			reports.add(reportToAdd);
+			total++;
+			lock.set(false);
+
 	}
 
 	/**
@@ -61,8 +70,7 @@ public class Diary {
 	 * Gets the total number of received missions (executed / aborted) be all the M-instances.
 	 * @return the total number of received missions (executed / aborted) be all the M-instances.
 	 */
-	public int getTotal(){ //CMNT synchronized
-		//TODO: Implement this
+	public int getTotal(){ //CMNT synchronized??
 		return total;
 	}
 }
