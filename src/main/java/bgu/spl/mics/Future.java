@@ -2,6 +2,8 @@ package bgu.spl.mics;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.System.nanoTime;
+
 /**
  * A Future object represents a promised result - an object that will
  * eventually be resolved to hold a result of some operation. The class allows
@@ -31,7 +33,7 @@ public class Future<T> {
      */
 	public T get() {
 		while(!done){
-			
+			//do nothing
 		}
 		return result;
 	}
@@ -63,8 +65,12 @@ public class Future<T> {
      *         elapsed, return null.
      */
 	public T get(long timeout, TimeUnit unit) {
-		//TODO: implement this.
-		return null;
+		long startTime = nanoTime();
+		while(!done && nanoTime()-startTime<unit.toNanos(timeout)){
+			//should somehow wait.
+		}
+		return result;
+
 	}
 
 }
