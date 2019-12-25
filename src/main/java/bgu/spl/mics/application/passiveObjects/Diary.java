@@ -1,5 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -11,24 +12,38 @@ import java.util.List;
  * You can add ONLY private fields and methods to this class as you see fit.
  */
 public class Diary {
+	private static Diary diary_singleton = new Diary();
+
+	private List<Report> reports;
+	private int total;
+
 	/**
 	 * Retrieves the single instance of this class.
 	 */
+	private Diary()
+	{
+		reports = new LinkedList<Report>();
+		total = 0;
+	}
 	public static Diary getInstance() {
-		//TODO: Implement this
-		return null;
+		if(diary_singleton == null)
+		{
+			diary_singleton = new Diary();
+		}
+		return diary_singleton;
 	}
 
 	public List<Report> getReports() {
-		return null;
+		return reports; //CMNT
 	}
 
 	/**
 	 * adds a report to the diary
 	 * @param reportToAdd - the report to add
 	 */
-	public void addReport(Report reportToAdd){
-		//TODO: Implement this
+	public void addReport(Report reportToAdd){ //CMNT synchronized??
+		reports.add(reportToAdd);
+		total++;
 	}
 
 	/**
@@ -46,8 +61,8 @@ public class Diary {
 	 * Gets the total number of received missions (executed / aborted) be all the M-instances.
 	 * @return the total number of received missions (executed / aborted) be all the M-instances.
 	 */
-	public int getTotal(){
+	public int getTotal(){ //CMNT synchronized
 		//TODO: Implement this
-		return 0;
+		return total;
 	}
 }
