@@ -7,6 +7,7 @@ package bgu.spl.mics.application.passiveObjects;
  * You may add ONLY private fields and methods to this class.
  */
 public class Agent {
+
 	private String serialNumber;
 	private String name;
 	private boolean available;
@@ -18,10 +19,10 @@ public class Agent {
 	}
 
 	/**
-     * Retrieves the serial number of an agent.
-     * <p>
-     * @return The serial number of an agent.
-     */
+	 * Retrieves the serial number of an agent.
+	 * <p>
+	 * @return The serial number of an agent.
+	 */
 	public String getSerialNumber() {
 		return serialNumber;
 	}
@@ -34,19 +35,19 @@ public class Agent {
 	}
 
 	/**
-     * Retrieves the name of the agent.
-     * <p>
-     * @return the name of the agent.
-     */
+	 * Retrieves the name of the agent.
+	 * <p>
+	 * @return the name of the agent.
+	 */
 	public String getName() {
 		return this.name;
 	}
 
 	/**
-     * Retrieves if the agent is available.
-     * <p>
-     * @return if the agent is available.
-     */
+	 * Retrieves if the agent is available.
+	 * <p>
+	 * @return if the agent is available.
+	 */
 	public boolean isAvailable() {
 		return available;
 	}

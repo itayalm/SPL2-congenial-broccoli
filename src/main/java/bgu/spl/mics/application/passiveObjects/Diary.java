@@ -3,8 +3,6 @@ package bgu.spl.mics.application.passiveObjects;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Passive object representing the diary where all reports are stored.
@@ -15,6 +13,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * You can add ONLY private fields and methods to this class as you see fit.
  */
 public class Diary {
+	/**
+	 * Retrieves the single instance of this class.
+	 */
 	private static Diary diary_singleton = new Diary();
 
 	private final AtomicBoolean lock;
@@ -49,9 +50,9 @@ public class Diary {
 	 */
 	public void addReport(Report reportToAdd){
 		while(!lock.compareAndSet(false, true));
-			reports.add(reportToAdd);
-			total++;
-			lock.set(false);
+		reports.add(reportToAdd);
+		total++;
+		lock.set(false);
 
 	}
 

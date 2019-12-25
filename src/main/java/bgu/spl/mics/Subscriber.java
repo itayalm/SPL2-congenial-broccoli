@@ -53,11 +53,11 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-            //CMNT should we check if the event was already subscribed to?
-            MessageBroker broker = MessageBrokerImpl.getInstance();
-            broker.subscribeEvent(type, this); // CMNT is it okay to send "this" ?
+        //CMNT should we check if the event was already subscribed to?
+        MessageBroker broker = MessageBrokerImpl.getInstance();
+        broker.subscribeEvent(type, this); // CMNT is it okay to send "this" ?
 
-            callbacksMap.put(type,callback);
+        callbacksMap.put(type,callback);
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class Subscriber extends RunnableSubPub {
                 Message Mes = broker.awaitMessage(this); //CMNT is it okay to send "this"?
                 Callback cb = callbacksMap.get(Mes);
                 cb.call(Mes);//CMNT is this the parameter we want to send?
-                
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

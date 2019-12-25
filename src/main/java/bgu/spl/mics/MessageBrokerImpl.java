@@ -1,11 +1,7 @@
 package bgu.spl.mics;
 
-import jdk.nashorn.internal.ir.Block;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -100,11 +96,14 @@ public class MessageBrokerImpl implements MessageBroker {
 	public synchronized <T> Future<T> sendEvent(Event<T> e) {
 		Future<T> f;
 		if (Topic.get(e).isEmpty() != true) {
-			Subscriber s = Topic.get(e).remove();
-			Topic.get(e).offer(s);
-			Subscribers.get(s).offer(e);
-			f  = futures.get(e);
-			return f;
+			try {
+				Subscriber s = Topic.get(e).take();
+				Topic.get(e).offer(s);
+				Subscribers.get(s).offer(e);
+				f = futures.get(e);
+				return f;
+			}
+			catch(Exception ex){return null;}
 		}
 		else
 		{
@@ -141,7 +140,5 @@ public class MessageBrokerImpl implements MessageBroker {
 		}
 
 	}
-
-	
 
 }

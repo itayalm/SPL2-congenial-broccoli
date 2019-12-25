@@ -26,8 +26,8 @@ public class Inventory {
 	}
 
 	/**
-     * Retrieves the single instance of this class.
-     */
+	 * Retrieves the single instance of this class.
+	 */
 	public static Inventory getInstance() {
 		if(inventory_singleton == null){
 			inventory_singleton = new Inventory();
@@ -36,24 +36,24 @@ public class Inventory {
 	}
 
 	/**
-     * Initializes the inventory. This method adds all the items given to the gadget
-     * inventory.
-     * <p>
-     * @param inventory 	Data structure containing all data necessary for initialization
-     * 						of the inventory.
-     */
+	 * Initializes the inventory. This method adds all the items given to the gadget
+	 * inventory.
+	 * <p>
+	 * @param inventory 	Data structure containing all data necessary for initialization
+	 * 						of the inventory.
+	 */
 	public void load (String[] inventory) {//CMNT not thread safe probz.
 		for(String s: inventory){
 			gadgets.add(s);
 		}
 	}
-	
+
 	/**
-     * acquires a gadget and returns 'true' if it exists.
-     * <p>
-     * @param gadget 		Name of the gadget to check if available
-     * @return 	‘false’ if the gadget is missing, and ‘true’ otherwise
-     */
+	 * acquires a gadget and returns 'true' if it exists.
+	 * <p>
+	 * @param gadget 		Name of the gadget to check if available
+	 * @return 	‘false’ if the gadget is missing, and ‘true’ otherwise
+	 */
 	public boolean getItem(String gadget){
 		while(!lock.compareAndSet(false, true));
 		for(String s: gadgets){
