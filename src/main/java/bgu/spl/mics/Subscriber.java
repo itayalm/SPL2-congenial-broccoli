@@ -81,7 +81,11 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-        //TODO: implement this.
+        //CMNT should we check if the event was already subscribed to?
+        MessageBroker broker = MessageBrokerImpl.getInstance();
+        broker.subscribeBroadcast(type, this); //CMNT is it okay to send "this"?
+
+        callbacksMap.put(type, callback);
     }
 
     /**
