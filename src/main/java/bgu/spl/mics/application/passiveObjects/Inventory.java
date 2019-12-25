@@ -1,6 +1,8 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  *  That's where Q holds his gadget (e.g. an explosive pen was used in GoldenEye, a geiger counter in Dr. No, etc).
@@ -11,13 +13,26 @@ import java.util.List;
  * You can add ONLY private fields and methods to this class as you see fit.
  */
 public class Inventory {
+	private static Inventory inventory_singleton = new Inventory();
+
+	private final AtomicBoolean lock;
+
 	private List<String> gadgets;
+
+	private Inventory(){
+		this.lock = new AtomicBoolean(false);
+
+		gadgets = new LinkedList<String>();
+	}
+
 	/**
      * Retrieves the single instance of this class.
      */
 	public static Inventory getInstance() {
-		//TODO: Implement this
-		return null;
+		if(inventory_singleton == null){
+			inventory_singleton = new Inventory();
+		}
+		return inventory_singleton;
 	}
 
 	/**
@@ -27,8 +42,10 @@ public class Inventory {
      * @param inventory 	Data structure containing all data necessary for initialization
      * 						of the inventory.
      */
-	public void load (String[] inventory) {
-		//TODO: Implement this
+	public void load (String[] inventory) {//CMNT not thread safe probz.
+		for(String s: inventory){
+			gadgets.add(s);
+		}
 	}
 	
 	/**
@@ -38,8 +55,15 @@ public class Inventory {
      * @return 	‘false’ if the gadget is missing, and ‘true’ otherwise
      */
 	public boolean getItem(String gadget){
-		//TODO: Implement this
-		return true;
+		while(!lock.compareAndSet(false, true));
+		for(String s: gadgets){
+			if(s==gadget){
+				lock.set(false);
+				return true;
+			}
+		}
+		lock.set(false);
+		return false;
 	}
 
 	/**
