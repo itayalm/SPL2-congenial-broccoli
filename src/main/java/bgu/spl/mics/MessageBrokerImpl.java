@@ -37,10 +37,10 @@ public class MessageBrokerImpl implements MessageBroker {
 			MB = new MessageBrokerImpl();
 		}
 		return MB;
-	}
+	}//safe
 
 	@Override
-	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
+	public synchronized  <T>  void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
 		BlockingQueue<Subscriber> Subs;
 		if (Topic.get(type) != null) {
 			Subs = Topic.get(type);
@@ -56,7 +56,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
+	public synchronized void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
 		BlockingQueue<Subscriber> Subs;
 		if (Topic.get(type) != null) {
 			Subs = Topic.get(type);
@@ -95,11 +95,11 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	}
 
-	
+
 	@Override
-	public <T> Future<T> sendEvent(Event<T> e) {
+	public synchronized <T> Future<T> sendEvent(Event<T> e) {
 		Future<T> f;
-		if (Topic.get(e) != null) {
+		if (Topic.get(e).isEmpty() != true) {
 			Subscriber s = Topic.get(e).remove();
 			Topic.get(e).offer(s);
 			Subscribers.get(s).offer(e);
@@ -119,7 +119,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public void unregister(Subscriber m) {
+	public synchronized void unregister(Subscriber m) {
 		if (Subscribers.get(m) != null) {
 			Subscribers.remove(m);
 			for (Map.Entry<Class<? extends Message> , BlockingQueue<Subscriber>> entry : Topic.entrySet()) {
@@ -129,10 +129,10 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public Message awaitMessage(Subscriber m) throws InterruptedException {
+	public synchronized  Message awaitMessage(Subscriber m) throws InterruptedException {
 		try
 		{
-			Message Mes = Subscribers.get(m).remove();
+			Message Mes = Subscribers.get(m).take();
 			return Mes;
 		}
 		catch(Exception e)
