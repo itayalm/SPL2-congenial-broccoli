@@ -35,7 +35,7 @@ public abstract class Subscriber extends RunnableSubPub {
      * Subscribes to events of type {@code type} with the callback
      * {@code callback}. This means two things:
      * 1. Subscribe to events in the singleton MessageBroker using the supplied
-     * {@code type}
+     * {@code type}get
      * 2. Store the {@code callback} so that when events of type {@code type}
      * are received it will be called.
      * <p>
@@ -111,14 +111,23 @@ public abstract class Subscriber extends RunnableSubPub {
     }
 
     /**
-     * The entry point of the Subscriber. TODO: you must complete this code
+     * The entry point of the Subscriber.
      * otherwise you will end up in an infinite loop.
      */
     @Override
     public final void run() {
+        MessageBroker broker = MessageBrokerImpl.getInstance();
+        broker.register(this); //CMNT is it okay to send "this"?
         initialize();
         while (!terminated) {
-            System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
+            try {
+                Message Mes = broker.awaitMessage(this); //CMNT is it okay to send "this"?
+                Callback cb = callbacksMap.get(Mes);
+                cb.call(Mes);//CMNT is this the parameter we want to send?
+                
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
