@@ -99,7 +99,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-        //TODO: implement this.
+        complete(e,result);
     }
 
     /**
