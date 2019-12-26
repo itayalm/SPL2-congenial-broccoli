@@ -1,6 +1,9 @@
 package bgu.spl.mics.application.passiveObjects;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Passive data-object representing a information about an agent in MI6.
@@ -10,14 +13,25 @@ import java.util.Map;
  */
 public class Squad {
 
+	private static Squad squad_singleton = new Squad();
+
+	private final AtomicBoolean lock;
+
 	private Map<String, Agent> agents;
+
+	private Squad(){
+		this.lock = new AtomicBoolean(false);
+		agents = new HashMap<>();
+	}
 
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static Squad getInstance() {
-		//TODO: Implement this
-		return null;
+		if(squad_singleton == null){
+			squad_singleton = new Squad();
+		}
+		return squad_singleton;
 	}
 
 	/**
@@ -26,15 +40,21 @@ public class Squad {
 	 * @param agents 	Data structure containing all data necessary for initialization
 	 * 						of the squad.
 	 */
-	public void load (Agent[] agents) {
-		// TODO Implement this
+	public void load (Agent[] agents) {//CMNT
+		for(Agent ag: agents){
+			this.agents.put(ag.getSerialNumber(),ag);
+		}
 	}
 
 	/**
 	 * Releases agents.
 	 */
 	public void releaseAgents(List<String> serials){
-		// TODO Implement this
+		while(!lock.compareAndSet(false,true));
+		for(String ser: serials){
+			this.agents.get(ser).release();
+		}
+		lock.set(true);
 	}
 
 	/**
@@ -42,7 +62,7 @@ public class Squad {
 	 * @param time   time ticks to sleep
 	 */
 	public void sendAgents(List<String> serials, int time){
-		// TODO Implement this
+		//todo implement this
 	}
 
 	/**
@@ -50,9 +70,33 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public boolean getAgents(List<String> serials){
-		// TODO Implement this
-		return false;
+	public boolean getAgents(List<String> serials){//CMNT should we release them here in case of fail or is it a case of mission aborted?
+		List<Agent> currAgents = new LinkedList<Agent>();
+		Agent currAgent;
+		while(!lock.compareAndSet(false,true));
+		for(String ser: serials){
+			currAgent = this.agents.get(ser);
+			if(currAgent==null){
+				for(Agent curr: currAgents){
+					curr.release();
+				}
+				lock.set(false);
+				return false;
+			}
+			while(!currAgent.isAvailable()){
+				lock.set(false);
+				try {
+					wait();
+				}
+				catch (InterruptedException e){}
+				while(lock.compareAndSet(false,true));
+			}
+			currAgent.acquire();
+			currAgents.add(currAgent);
+		}
+		lock.set(false);
+		return true;
+
 	}
 
     /**
