@@ -57,7 +57,7 @@ public class Agent {
 	 */
 	public synchronized void acquire()
 	{
-		while(!isAvailable())
+		while(!this.available)
 		{
 			try{
 				wait();
@@ -74,7 +74,7 @@ public class Agent {
 	 * Releases an agent.
 	 */
 	public synchronized void release(){
-		while(isAvailable()){
+		while(this.available){
 			try{
 				wait();
 			}
