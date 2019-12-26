@@ -15,12 +15,10 @@ public class Squad {
 
 	private static Squad squad_singleton = new Squad();
 
-	private final AtomicBoolean lock;
 
 	private Map<String, Agent> agents;
 
 	private Squad(){
-		this.lock = new AtomicBoolean(false);
 		agents = new HashMap<>();
 	}
 
@@ -50,11 +48,9 @@ public class Squad {
 	 * Releases agents.
 	 */
 	public void releaseAgents(List<String> serials){
-		while(!lock.compareAndSet(false,true));
 		for(String ser: serials){
 			this.agents.get(ser).release();
 		}
-		lock.set(true);
 	}
 
 	/**
@@ -70,33 +66,16 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public boolean getAgents(List<String> serials){//CMNT should we release them here in case of fail or is it a case of mission aborted?
-		List<Agent> currAgents = new LinkedList<Agent>();
+	public boolean getAgents(List<String> serials){
 		Agent currAgent;
-		while(!lock.compareAndSet(false,true));
 		for(String ser: serials){
 			currAgent = this.agents.get(ser);
-			if(currAgent==null){
-				for(Agent curr: currAgents){
-					curr.release();
-				}
-				lock.set(false);
+			if(currAgent == null){
 				return false;
 			}
-			while(!currAgent.isAvailable()){
-				lock.set(false);
-				try {
-					wait();
-				}
-				catch (InterruptedException e){}
-				while(lock.compareAndSet(false,true));
-			}
 			currAgent.acquire();
-			currAgents.add(currAgent);
 		}
-		lock.set(false);
 		return true;
-
 	}
 
     /**
