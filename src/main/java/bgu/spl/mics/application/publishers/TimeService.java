@@ -1,7 +1,8 @@
 package bgu.spl.mics.application.publishers;
 
 import bgu.spl.mics.Publisher;
-
+import java.util.Timer;
+import java.util.TimerTask;
 /**
  * TimeService is the global system timer There is only one instance of this Publisher.
  * It keeps track of the amount of ticks passed since initialization and notifies
@@ -12,21 +13,30 @@ import bgu.spl.mics.Publisher;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class TimeService extends Publisher {
+	private int ticksPassed;
+	private int duration;
+	private Timer timer;
+	private Helper task;
 
-	public TimeService() {
-		super("Change_This_Name");
-		// TODO Implement this
+	private TimeService(String name, int duration) {
+		super(name);
+		this.duration = duration;
+		this.ticksPassed = 0;
+		timer = new Timer();
+		task = new Helper();
+
 	}
+
 
 	@Override
 	protected void initialize() {
-		// TODO Implement this
-		
 	}
 
 	@Override
 	public void run() {
-		// TODO Implement this
+		timer.scheduleAtFixedRate(task,0,100);
+		if (task.getTickNum() > duration)
+			timer.cancel();
 	}
 
 }
