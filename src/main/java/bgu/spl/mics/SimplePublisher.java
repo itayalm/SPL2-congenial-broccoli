@@ -23,9 +23,12 @@ public final class SimplePublisher {
      * 	       			null in case no Subscriber has subscribed to {@code e.getClass()}.
      */
     public final <T> Future<T> sendEvent(Event<T> e) {
-        //TODO: implement this.
-        return null; //TODO: delete this line :)
+        MessageBroker broker = MessageBrokerImpl.getInstance();
+        Future<T> future_return_object= broker.sendEvent(e);
+        return future_return_object;
+
     }
+
 
     /**
      * A Publisher calls this method in order to send the broadcast message {@code b} using the MessageBroker
@@ -34,6 +37,7 @@ public final class SimplePublisher {
      * @param b The broadcast message to send
      */
     public final void sendBroadcast(Broadcast b) {
-        //TODO: implement this.
+        MessageBroker broker = MessageBrokerImpl.getInstance();
+        broker.sendBroadcast(b);
     }
 }
