@@ -56,14 +56,19 @@ public class Inventory {
 	 */
 	public boolean getItem(String gadget){
 		while(!lock.compareAndSet(false, true));
-		for(String s: gadgets){
-			if(s==gadget){
-				lock.set(false);
-				return true;
+		try {
+			for (String s : gadgets) {
+				if (s == gadget) {
+					lock.set(false);
+					return true;
+				}
 			}
+			return false;
 		}
-		lock.set(false);
-		return false;
+		finally {
+			lock.set(false);
+		}
+
 	}
 
 	/**
