@@ -6,7 +6,7 @@ import bgu.spl.mics.application.passiveObjects.MissionInfo;
 public class MissionRecievedEvent implements Event {
     private MissionInfo info;
 
-    private MissionRecievedEvent(MissionInfo info){
+    public MissionRecievedEvent(MissionInfo info){
         this.info = info;
 
     }

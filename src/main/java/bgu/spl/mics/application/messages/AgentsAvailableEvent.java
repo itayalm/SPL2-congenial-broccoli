@@ -6,7 +6,7 @@ public class AgentsAvailableEvent {
     private List<String> serials;
     private int duration;
 
-    private AgentsAvailableEvent(List<String> serials, int duration){
+     public AgentsAvailableEvent(List<String> serials, int duration){
         this.serials = serials;
         this.duration = duration;
     }
