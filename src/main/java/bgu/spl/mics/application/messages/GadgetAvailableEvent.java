@@ -1,6 +1,8 @@
 package bgu.spl.mics.application.messages;
 
-public class GadgetAvailableEvent {
+import bgu.spl.mics.Event;
+
+public class GadgetAvailableEvent implements Event {
     private int id;
 
     public GadgetAvailableEvent(int id){
