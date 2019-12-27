@@ -55,14 +55,32 @@ public class Agent {
 	/**
 	 * Acquires an agent.
 	 */
-	public void acquire(){
+	public synchronized void acquire()
+	{
+		while(!this.available)
+		{
+			try{
+				wait();
+			}
+			catch (InterruptedException e){}
+		}
+
 		this.available = false;
+		notifyAll();
+
 	}
 
 	/**
 	 * Releases an agent.
 	 */
-	public void release(){
+	public synchronized void release(){
+		while(this.available){
+			try{
+				wait();
+			}
+			catch (InterruptedException e){}
+		}
 		this.available = true;
+		notifyAll();
 	}
 }
