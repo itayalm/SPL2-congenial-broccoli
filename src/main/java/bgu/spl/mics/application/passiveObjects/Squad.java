@@ -62,7 +62,7 @@ public class Squad {
 	}
 
 	/**
-	 * acquires an agent, i.e. holds the agent until the caller is done with it
+	 * acquires an agent, i.e. holdys the agent until the caller is done with it
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
@@ -84,8 +84,11 @@ public class Squad {
      * @return a list of the names of the agents with the specified serials.
      */
     public List<String> getAgentsNames(List<String> serials){
-        // TODO Implement this
-	    return null;
+        List<String> namesList = new LinkedList<String>();
+        for(String ser: serials){
+        	namesList.add(this.agents.get(ser).getName());
+		}
+        return namesList;
     }
 
 }

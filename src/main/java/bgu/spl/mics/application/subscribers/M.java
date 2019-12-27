@@ -1,5 +1,6 @@
 package bgu.spl.mics.application.subscribers;
-
+import bgu.spl.mics.MessageBroker;
+import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
 
 /**
@@ -9,16 +10,29 @@ import bgu.spl.mics.Subscriber;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class M extends Subscriber {
-
-	public M() {
-		super("Change_This_Name");
-		// TODO Implement this
+	private MissionRecievedEvent mission;
+	private AgentsAvailableEvent agents;
+	private GadgetAvailableEvemt gadget;
+	private int timeTick;
+	private MessageBroker mb;
+	public M(String name) {
+		super(name);
+		mb = MessageBrokerImpl.getInstance();
+		// TODO Implement this, need event implemantation
 	}
 
 	@Override
-	protected void initialize() {
-		// TODO Implement this
-		
+	protected void initialize() throws InterruptedException {
+		Message m = mb.awaitMessage(this);
+		if(/* m is a timeTick*/)
+		{
+
+		}
+		else//need event implemantation
+		{
+
+		}
+
 	}
 
 }

@@ -22,6 +22,7 @@ public class Intelligence extends Subscriber {
 	private LinkedList<MissionRecievedEvent> missionList;
 	public Intelligence(String name) {
 		super(name);
+
 		mb = MessageBrokerImpl.getInstance();
 		infoList = new LinkedList<>();
 		missionList = new LinkedList<MissionRecievedEvent>();
