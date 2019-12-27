@@ -123,6 +123,10 @@ public class MessageBrokerImpl implements MessageBroker {
 			Subscribers.remove(m);
 			for (Map.Entry<Class<? extends Message> , BlockingQueue<Subscriber>> entry : Topic.entrySet()) {
 				entry.getValue().remove(m);
+				if (entry.getValue().isEmpty())
+				{
+					Topic.remove(entry);
+				}
 			}
 		}
 	}

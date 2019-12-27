@@ -19,13 +19,13 @@ public class Intelligence extends Subscriber {
 
 	private MessageBroker mb;
 	private LinkedList<MissionInfo> infoList;
-	private LinkedList<MissionRecievedEvent> missionList;
+	private LinkedList<MissionInfo> infoList;
 	public Intelligence(String name) {
 		super(name);
 
 		mb = MessageBrokerImpl.getInstance();
 		infoList = new LinkedList<>();
-		missionList = new LinkedList<MissionRecievedEvent>();
+		infoList = new LinkedList<MissionInfo>();
 	}
 	public Intelligence(String name, LinkedList<MissionInfo> infoList)
 	{
