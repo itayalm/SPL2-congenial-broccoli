@@ -4,7 +4,7 @@ import java.util.List;
 
 public class AgentsAvailableEvent {
     private List<String> serials;
-    int duration;
+    private int duration;
 
     private AgentsAvailableEvent(List<String> serials, int duration){
         this.serials = serials;
