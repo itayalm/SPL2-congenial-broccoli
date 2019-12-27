@@ -1,6 +1,10 @@
 package bgu.spl.mics.application.subscribers;
 
+import bgu.spl.mics.Callback;
+import bgu.spl.mics.Pair;
 import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.application.messages.GadgetAvailableEvent;
+import bgu.spl.mics.application.messages.TickBroadcast;
 import bgu.spl.mics.application.passiveObjects.Inventory;
 
 /**
@@ -11,17 +15,29 @@ import bgu.spl.mics.application.passiveObjects.Inventory;
  */
 public class Q extends Subscriber {
 	private Inventory inven;
-	private GadgetAvailableEvent gadgets;
+	private int timeTick;
 	public Q(String name) {
 		super(name);
 		inven = Inventory.getInstance();
-		// TODO Implement this
+		timeTick = 0;
 	}
 
 	@Override
 	protected void initialize() {
-		//need Event implementation for this
-		// TODO Implement this
+		this.subscribeBroadcast(TickBroadcast.class, new Callback<TickBroadcast>() {
+			@Override
+			public void call(TickBroadcast c) {
+				timeTick++;
+			}
+		});
+		this.subscribeEvent(GadgetAvailableEvent.class, new Callback<GadgetAvailableEvent>() {
+			@Override
+			public void call(GadgetAvailableEvent c) {
+				String gadgetNum = c.getId();
+				Boolean available = inven.getItem(gadgetNum);
+				complete(c, new Pair<Integer, Boolean>(timeTick, available));
+			}
+		});
 		
 	}
 

@@ -3,17 +3,17 @@ package bgu.spl.mics.application.messages;
 import bgu.spl.mics.Event;
 
 public class GadgetAvailableEvent implements Event {
-    private int id;
+    private String name;
 
-    public GadgetAvailableEvent(int id){
-        this.id = id;
+    public GadgetAvailableEvent(String name){
+        this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String getId() {
+        return name;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String name) {
+        this.name = name;
     }
 }

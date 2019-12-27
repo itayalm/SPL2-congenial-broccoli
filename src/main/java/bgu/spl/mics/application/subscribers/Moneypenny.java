@@ -1,7 +1,12 @@
 package bgu.spl.mics.application.subscribers;
 
+import bgu.spl.mics.Callback;
 import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.Trio;
+import bgu.spl.mics.application.messages.AgentsAvailableEvent;
 import bgu.spl.mics.application.passiveObjects.Squad;
+
+import java.util.List;
 
 /**
  * Only this type of Subscriber can access the squad.
@@ -12,18 +17,29 @@ import bgu.spl.mics.application.passiveObjects.Squad;
  */
 public class Moneypenny extends Subscriber {
 	private Squad squad;
-	private AgentsAvailableEvent agents;
 
 	public Moneypenny(String name) {
 		super(name);
 		squad = Squad.getInstance();
-		// TODO Implement this
 	}
 
 	@Override
 	protected void initialize() {
-		//need event implementation for this
-		// TODO Implement this
+		this.subscribeEvent(AgentsAvailableEvent.class, new Callback<AgentsAvailableEvent>() {
+			@Override
+			public void call(AgentsAvailableEvent c) {
+				List<String> serial = c.getSerials();
+				int duration = c.getDuration();
+				boolean b = squad.getAgents(serial);
+				if (b)
+				{
+					squad.sendAgents(serial,duration);
+				}
+				List<String> names  = squad.getAgentsNames(serial);
+				Trio<String, List<String>, Boolean> t = new Trio(getName(), names, b);
+				complete(c, t);
+			}
+		});
 		
 	}
 

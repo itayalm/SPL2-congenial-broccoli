@@ -60,6 +60,7 @@ public class Inventory {
 			for (String s : gadgets) {
 				if (s == gadget) {
 					lock.set(false);
+					gadgets.remove(s);
 					return true;
 				}
 			}

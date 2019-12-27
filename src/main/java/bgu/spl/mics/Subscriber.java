@@ -101,7 +101,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-        complete(e,result);
+        MessageBrokerImpl.getInstance().complete(e,result);
     }
 
     /**
