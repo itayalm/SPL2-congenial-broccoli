@@ -50,10 +50,12 @@ public class Diary {
 	 */
 	public void addReport(Report reportToAdd){
 		while(!lock.compareAndSet(false, true));
-		reports.add(reportToAdd);
-		total++;
-		lock.set(false);
-
+		try {
+			reports.add(reportToAdd);
+		}
+		finally {
+			lock.set(false);
+		}
 	}
 
 	/**
@@ -65,6 +67,16 @@ public class Diary {
 	 */
 	public void printToFile(String filename){
 		//TODO: Implement this
+	}
+
+	public void incrementTotal(){
+		while(!lock.compareAndSet(false,true));
+		try {
+			total++;
+		}
+		finally {
+			lock.set(false);
+		}
 	}
 
 	/**

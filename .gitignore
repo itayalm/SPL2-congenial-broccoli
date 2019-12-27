@@ -35,4 +35,6 @@
 #stuuuuf and .idea
 .idea/
 pom.xml
-.iml
+src/main/main.iml
+src/test/test.iml
+
