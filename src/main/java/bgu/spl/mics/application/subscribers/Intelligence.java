@@ -44,7 +44,7 @@ public class Intelligence extends Subscriber {
 						getSimplePublisher().sendEvent(new MissionRecievedEvent(m));
 					}
 				}
-				ticks++;
+				ticks = c.getTickCount();
 
 			}
 		});

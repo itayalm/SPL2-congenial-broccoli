@@ -38,7 +38,7 @@ public class TimeService extends Publisher {
 		timer.scheduleAtFixedRate(task,0,100);
 		if (task.getTickNum() > duration)
 			timer.cancel();
-		this.getSimplePublisher().sendBroadcast(new TickBroadcast());
+		this.getSimplePublisher().sendBroadcast(new TickBroadcast(ticksPassed));
 	}
 
 }

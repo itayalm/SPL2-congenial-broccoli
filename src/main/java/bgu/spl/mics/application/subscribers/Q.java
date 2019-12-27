@@ -27,7 +27,7 @@ public class Q extends Subscriber {
 		this.subscribeBroadcast(TickBroadcast.class, new Callback<TickBroadcast>() {
 			@Override
 			public void call(TickBroadcast c) {
-				timeTick++;
+				timeTick = c.getTickCount();
 			}
 		});
 		this.subscribeEvent(GadgetAvailableEvent.class, new Callback<GadgetAvailableEvent>() {

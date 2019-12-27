@@ -30,12 +30,15 @@ public class Moneypenny extends Subscriber {
 			public void call(AgentsAvailableEvent c) {
 				List<String> serial = c.getSerials();
 				int duration = c.getDuration();
-				boolean b = squad.getAgents(serial);
-				if (b)
-				{
-					squad.sendAgents(serial,duration);
+				boolean b;
+				List<String> names;
+				synchronized(this) { // so several instances wont access the squad simultaneously
+					b = squad.getAgents(serial);
+					if (b) {
+						squad.sendAgents(serial, duration);
+					}
+					names = squad.getAgentsNames(serial);
 				}
-				List<String> names  = squad.getAgentsNames(serial);
 				Trio<String, List<String>, Boolean> t = new Trio(getName(), names, b);
 				complete(c, t);
 			}

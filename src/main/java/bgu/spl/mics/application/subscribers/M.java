@@ -27,7 +27,7 @@ public class M extends Subscriber {
 		this.subscribeBroadcast(TickBroadcast.class, new Callback<TickBroadcast>() {
 			@Override
 			public void call(TickBroadcast c) {
-				timeTick++;
+				timeTick = c.getTickCount();
 			}
 		});
 		this.subscribeEvent(MissionRecievedEvent.class, new Callback<MissionRecievedEvent>() {
@@ -36,6 +36,7 @@ public class M extends Subscriber {
 			public void call(MissionRecievedEvent c) {
 
 				MissionInfo info = c.getInfo();
+				long start = System.currentTimeMillis();
 				report.setTimeIssued(timeTick);
 				report.setMissionName(info.getMissionName());
 				report.setM(Integer.parseInt(getName()));
@@ -57,7 +58,9 @@ public class M extends Subscriber {
 					return;
 				}
 				report.setQTime(qTime);
-				if (timeTick > info.getTimeExpired()) { // probably need to do this with a local time function cause we wont recieve broadcasts while this is happening
+				int elapsed = (int)(System.currentTimeMillis() - start)/100;
+				timeTick = timeTick + elapsed;
+				if (timeTick > info.getTimeExpired()) {
 					abortMission(info);
 					return;
 				}
