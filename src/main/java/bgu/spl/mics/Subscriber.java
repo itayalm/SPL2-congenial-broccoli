@@ -28,6 +28,8 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     public Subscriber(String name) {
         super(name);
+        MessageBroker mb = MessageBrokerImpl.getInstance();
+        mb.register(this);
         callbacksMap = new HashMap<>();
     }
 
@@ -118,7 +120,11 @@ public abstract class Subscriber extends RunnableSubPub {
     public final void run() {
         MessageBroker broker = MessageBrokerImpl.getInstance();
         broker.register(this); //CMNT is it okay to send "this"?
-        initialize();
+        try {
+            initialize();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         while (!terminated) {
             try {
                 Message Mes = broker.awaitMessage(this); //CMNT is it okay to send "this"?

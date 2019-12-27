@@ -1,6 +1,8 @@
 package bgu.spl.mics.application.publishers;
 
 import bgu.spl.mics.Publisher;
+import bgu.spl.mics.application.messages.TickBroadcast;
+
 import java.util.Timer;
 import java.util.TimerTask;
 /**
@@ -24,7 +26,6 @@ public class TimeService extends Publisher {
 		this.ticksPassed = 0;
 		timer = new Timer();
 		task = new Helper();
-
 	}
 
 
@@ -37,6 +38,7 @@ public class TimeService extends Publisher {
 		timer.scheduleAtFixedRate(task,0,100);
 		if (task.getTickNum() > duration)
 			timer.cancel();
+		this.getSimplePublisher().sendBroadcast(new TickBroadcast());
 	}
 
 }

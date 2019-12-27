@@ -113,8 +113,10 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void register(Subscriber m) {
-		if (m != null)
-			Subscribers.put(m,new LinkedBlockingQueue<Message>());
+		if (m != null) {
+			if (Subscribers.get(m) == null)
+				Subscribers.put(m, new LinkedBlockingQueue<Message>());
+		}
 	}
 
 	@Override

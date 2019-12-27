@@ -1,7 +1,11 @@
 package bgu.spl.mics.application.subscribers;
+import bgu.spl.mics.Callback;
 import bgu.spl.mics.MessageBroker;
 import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.application.messages.MissionRecievedEvent;
+import bgu.spl.mics.application.passiveObjects.MissionInfo;
+import bgu.spl.mics.application.passiveObjects.Report;
 
 /**
  * M handles ReadyEvent - fills a report and sends agents to mission.
@@ -10,28 +14,23 @@ import bgu.spl.mics.Subscriber;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class M extends Subscriber {
-	private MissionRecievedEvent mission;
-	private AgentsAvailableEvent agents;
-	private GadgetAvailableEvemt gadget;
+
 	private int timeTick;
-	private MessageBroker mb;
+	private Report report;
 	public M(String name) {
 		super(name);
-		mb = MessageBrokerImpl.getInstance();
-		// TODO Implement this, need event implemantation
+		report = new Report();
 	}
 
 	@Override
 	protected void initialize() throws InterruptedException {
-		Message m = mb.awaitMessage(this);
-		if(/* m is a timeTick*/)
-		{
-
-		}
-		else//need event implemantation
-		{
-
-		}
+		this.subscribeEvent(MissionRecievedEvent.class, new Callback<MissionRecievedEvent>() {
+			@Override
+			public void call(MissionRecievedEvent c) {
+				MissionInfo info = c.getInfo();
+				report.
+			}
+		});
 
 	}
 
