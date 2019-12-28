@@ -1,25 +1,28 @@
 package bgu.spl.mics.application.publishers;
 import bgu.spl.mics.MessageBroker;
 import bgu.spl.mics.MessageBrokerImpl;
+import bgu.spl.mics.application.messages.TickBroadcast;
 
 import java.util.LinkedList;
 import java.util.TimerTask;
 
 public class Helper extends TimerTask{
-    private TickBroadcast tick;
     private int tickNum;
     private MessageBroker mb;
-    public Helper()
+    private int duration;
+    public Helper(int duration)
     {
-        this.tick = new TickBroadcast();
         tickNum = 0;
         mb = MessageBrokerImpl.getInstance();
+        this.duration = duration;
     }
 
     @Override
     public void run() {
-        mb.sendBroadcast(tick);// TODO need to implement Broadcast after itay finished tickBroadcast
-        tickNum++;
+        if (tickNum < duration) {
+            mb.sendBroadcast(new TickBroadcast(tickNum));
+            tickNum++;
+        }
     }
 
     public int getTickNum() {

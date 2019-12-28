@@ -25,7 +25,7 @@ public class TimeService extends Publisher {
 		this.duration = duration;
 		this.ticksPassed = 0;
 		timer = new Timer();
-		task = new Helper();
+		task = new Helper(duration, );
 	}
 
 
@@ -38,7 +38,8 @@ public class TimeService extends Publisher {
 		timer.scheduleAtFixedRate(task,0,100);
 		if (task.getTickNum() > duration)
 			timer.cancel();
-		this.getSimplePublisher().sendBroadcast(new TickBroadcast(ticksPassed));
+		else
+			timer.cancel();
 	}
 
 }

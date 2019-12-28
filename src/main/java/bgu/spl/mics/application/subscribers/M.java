@@ -31,10 +31,10 @@ public class M extends Subscriber {
 			}
 		});
 		this.subscribeEvent(MissionRecievedEvent.class, new Callback<MissionRecievedEvent>() {
-			Report report = new Report();//create Report
+
 			@Override
 			public void call(MissionRecievedEvent c) {
-
+				Report report = new Report();//create Report
 				MissionInfo info = c.getInfo();
 				long start = System.currentTimeMillis();
 				report.setTimeIssued(timeTick);
@@ -46,7 +46,7 @@ public class M extends Subscriber {
 				Future<Trio<String, List<String>,Boolean>> agentFuture = getSimplePublisher().sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers(), info.getDuration()));
 				Trio<String, List<String>, Boolean> trio = agentFuture.get(); // wait occurs here
 				if (!trio.getThird()) { // if the agent serial isnt right
-					abortMission(info);
+					diary.incrementTotal();
 					return;
 				}
 				report.setAgentsNames(trio.getSecond()); // maybe this should be the timeout get
@@ -54,25 +54,17 @@ public class M extends Subscriber {
 				Future<Pair<Integer, Boolean>> gadgetFuture = getSimplePublisher().sendEvent(new GadgetAvailableEvent(info.getGadget()));
 				int qTime = gadgetFuture.get().getFirst();
 				if (!gadgetFuture.get().getSecond()) { // if the gadget name isnt right
-					abortMission(info);
+					diary.incrementTotal();
 					return;
 				}
 				report.setQTime(qTime);
 				int elapsed = (int)(System.currentTimeMillis() - start)/100;
 				timeTick = timeTick + elapsed;
 				if (timeTick > info.getTimeExpired()) {
-					abortMission(info);
+					diary.incrementTotal();
 					return;
 				}
 				diary.addReport(report);
-				getSimplePublisher().sendEvent(new ReleaseAgentsEvent(info.getSerialAgentsNumbers()));
-
-			}
-
-			public void abortMission(MissionInfo info)
-			{
-				getSimplePublisher().sendEvent(new ReleaseAgentsEvent(info.getSerialAgentsNumbers()));
-				diary.incrementTotal();
 			}
 		});
 

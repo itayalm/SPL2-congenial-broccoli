@@ -34,7 +34,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			MB = new MessageBrokerImpl();
 		}
 		return MB;
-	}//safe
+	}
 
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
