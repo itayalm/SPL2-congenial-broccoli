@@ -1,5 +1,10 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -71,6 +76,17 @@ public class Inventory {
 	 * This method is called by the main method in order to generate the output.
 	 */
 	public void printToFile(String filename){
-		//TODO: Implement this
+		JSONArray gadgets = new JSONArray();
+		for(String gadg: this.gadgets){
+			gadgets.add(gadg);
+		}
+		try (FileWriter file = new FileWriter(filename)) {
+
+			file.write(gadgets.toJSONString());
+			file.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

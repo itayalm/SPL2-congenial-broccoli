@@ -1,9 +1,6 @@
 package bgu.spl.mics.application;
 
-import bgu.spl.mics.application.passiveObjects.Agent;
-import bgu.spl.mics.application.passiveObjects.Inventory;
-import bgu.spl.mics.application.passiveObjects.MissionInfo;
-import bgu.spl.mics.application.passiveObjects.Squad;
+import bgu.spl.mics.application.passiveObjects.*;
 import bgu.spl.mics.application.publishers.TimeService;
 import bgu.spl.mics.application.subscribers.Intelligence;
 import bgu.spl.mics.application.subscribers.M;
@@ -30,7 +27,7 @@ public class MI6Runner {
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
 
-        try (Reader reader = new FileReader("/home/rusty/OneDrive/BGU Synced Library/BGU Semester 3/SPL/homework2/SPL2-congenial-broccoli/src/main/java/bgu/spl/mics/application/input201[3].json")) {
+        try (Reader reader = new FileReader(args[0])) {
 
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             System.out.println(jsonObject);
@@ -118,8 +115,15 @@ public class MI6Runner {
             Thread qt = new Thread(q);
             qt.start();
 
-//            Thread inteleThread = new Thread(intel);
+            try {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e){}
+            Inventory inventory = Inventory.getInstance();
+            inventory.printToFile(args[1]);
 
+            Diary diary = Diary.getInstance();
+            diary.printToFile(args[2]);
 
 
             System.out.println("baba bubu");

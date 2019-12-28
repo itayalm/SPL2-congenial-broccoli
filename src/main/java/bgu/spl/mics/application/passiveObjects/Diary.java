@@ -1,5 +1,10 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -66,7 +71,44 @@ public class Diary {
 	 * This method is called by the main method in order to generate the output.
 	 */
 	public void printToFile(String filename){
-		//TODO: Implement this
+		JSONArray reports = new JSONArray();
+		int k=0;
+		for(Report rep: this.reports){
+			JSONObject curr_report = new JSONObject();
+			curr_report.put("missionName", rep.getMissionName());
+			curr_report.put("m", rep.getM());
+			curr_report.put("moneypenny", rep.getMoneypenny());
+			//put agents serial numbers
+			JSONArray agents_serial_numbers = new JSONArray();
+			for(int i=0; i<rep.getAgentsSerialNumbers().size(); i++){
+				agents_serial_numbers.add(rep.getAgentsSerialNumbers().get(i));
+			}
+			curr_report.put("agentSerialNumbers", agents_serial_numbers);
+			//put agents names;
+			JSONArray agents_names = new JSONArray();
+			for(int i=0; i<rep.getAgentsNames().size(); i++){
+				agents_names.add(rep.getAgentsNames().get(i));
+			}
+			curr_report.put("agentNames", agents_names);
+			curr_report.put("gadgetName", rep.getGadgetName());
+			curr_report.put("timeCreated",rep.getTimeCreated());
+			curr_report.put("timeIssued", rep.getTimeIssued());
+			curr_report.put("qTime", rep.getQTime());
+
+			reports.add(curr_report);
+		}
+		JSONObject diary = new JSONObject();
+		diary.put("reports", reports);
+		diary.put("total",total);
+
+		try (FileWriter file = new FileWriter(filename)) {
+
+			file.write(diary.toJSONString());
+			file.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void incrementTotal(){
