@@ -31,7 +31,7 @@ public class MI6Runner {
 //            long age = (Long) jsonObject.get("age");
 //            System.out.println(age);
 
-            List<String> gadgets= new LinkedList<String>;
+            List<String> gadgets= new LinkedList<String>();
             // loop array
             JSONArray msg = (JSONArray) jsonObject.get("Inventory");
             Iterator<String> iterator = msg.iterator();
