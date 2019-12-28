@@ -3,6 +3,7 @@ package bgu.spl.mics;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -22,9 +23,9 @@ public class MessageBrokerImpl implements MessageBroker {
 	Map<Subscriber, BlockingQueue<Message>> Subscribers;
 	private MessageBrokerImpl()
 	{
-		Topic = new HashMap<>();
-		futures = new HashMap<>();
-		Subscribers = new HashMap<>();
+		Topic = new ConcurrentHashMap<>();
+		futures = new ConcurrentHashMap<>();
+		Subscribers = new ConcurrentHashMap<>();
 	}
 
 	public static MessageBroker getInstance() {
@@ -36,7 +37,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	}//safe
 
 	@Override
-	public synchronized  <T>  void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
+	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
 		BlockingQueue<Subscriber> Subs;
 		if (Topic.get(type) != null) {
 			Subs = Topic.get(type);
@@ -52,7 +53,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public synchronized void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
+	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
 		BlockingQueue<Subscriber> Subs;
 		if (Topic.get(type) != null) {
 			Subs = Topic.get(type);
@@ -62,8 +63,8 @@ public class MessageBrokerImpl implements MessageBroker {
 		{
 			Subs = new LinkedBlockingQueue<Subscriber>();
 			Subs.offer(m);
-			Topic.put(type, Subs);
-		}
+				Topic.put(type, Subs);
+	}
 
 	}
 
@@ -134,7 +135,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public synchronized  Message awaitMessage(Subscriber m) throws InterruptedException {
+	public Message awaitMessage(Subscriber m) throws InterruptedException {
 		try
 		{
 			Message Mes = Subscribers.get(m).take();
