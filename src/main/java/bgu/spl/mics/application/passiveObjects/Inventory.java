@@ -15,13 +15,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Inventory {
 	private static Inventory inventory_singleton = new Inventory();
 
-	private final AtomicBoolean lock;
 
 	private List<String> gadgets;
 
 	private Inventory(){
-		this.lock = new AtomicBoolean(false);
-
 		gadgets = new LinkedList<String>();
 	}
 
@@ -55,20 +52,14 @@ public class Inventory {
 	 * @return 	‘false’ if the gadget is missing, and ‘true’ otherwise
 	 */
 	public boolean getItem(String gadget){
-		while(!lock.compareAndSet(false, true));
-		try {
+
 			for (String s : gadgets) {
 				if (s == gadget) {
-					lock.set(false);
 					gadgets.remove(s);
 					return true;
 				}
 			}
 			return false;
-		}
-		finally {
-			lock.set(false);
-		}
 
 	}
 
