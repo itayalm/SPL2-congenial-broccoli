@@ -1,5 +1,10 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -15,13 +20,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Inventory {
 	private static Inventory inventory_singleton = new Inventory();
 
-	private final AtomicBoolean lock;
 
 	private List<String> gadgets;
 
 	private Inventory(){
-		this.lock = new AtomicBoolean(false);
-
 		gadgets = new LinkedList<String>();
 	}
 
@@ -55,20 +57,14 @@ public class Inventory {
 	 * @return 	‘false’ if the gadget is missing, and ‘true’ otherwise
 	 */
 	public boolean getItem(String gadget){
-		while(!lock.compareAndSet(false, true));
-		try {
+
 			for (String s : gadgets) {
 				if (s == gadget) {
-					lock.set(false);
 					gadgets.remove(s);
 					return true;
 				}
 			}
 			return false;
-		}
-		finally {
-			lock.set(false);
-		}
 
 	}
 
@@ -80,6 +76,17 @@ public class Inventory {
 	 * This method is called by the main method in order to generate the output.
 	 */
 	public void printToFile(String filename){
-		//TODO: Implement this
+		JSONArray gadgets = new JSONArray();
+		for(String gadg: this.gadgets){
+			gadgets.add(gadg);
+		}
+		try (FileWriter file = new FileWriter(filename)) {
+
+			file.write(gadgets.toJSONString());
+			file.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

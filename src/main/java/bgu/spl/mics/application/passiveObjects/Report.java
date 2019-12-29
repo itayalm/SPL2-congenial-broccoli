@@ -14,12 +14,12 @@ public class Report {
 	private String missionName;
 	private int M;
 	private int MoneyPenny;
-	List<String> agentsSerialNumbers;
-	List<String> agentsNames;
-	String gadgetName;
-	int timeIssued;
-	int QTime;
-	int timeCreated;
+	private List<String> agentsSerialNumbers;
+	private List<String> agentsNames;
+	private String gadgetName;
+	private int timeIssued;
+	private int QTime;
+	private int timeCreated;
 
 	/**
      * Retrieves the mission name.

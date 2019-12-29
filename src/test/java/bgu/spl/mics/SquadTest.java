@@ -27,7 +27,7 @@ public class SquadTest {
         agents[2] = new Agent();
         agents[2].setSerialNumber("0012");
         agents[2].setName("Sam Johnston");
-        sq = new Squad();
+        sq = Squad.getInstance();
 
     }
 

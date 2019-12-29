@@ -21,7 +21,7 @@ public class TimeService extends Publisher {
 	private Timer timer;
 	private Helper task;
 
-	private TimeService(String name, int duration) {
+	public TimeService(String name, int duration) {
 		super(name);
 		this.duration = duration;
 		this.ticksPassed = 0;
