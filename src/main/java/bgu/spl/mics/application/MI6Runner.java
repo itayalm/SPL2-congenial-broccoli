@@ -6,7 +6,6 @@ import bgu.spl.mics.application.subscribers.Intelligence;
 import bgu.spl.mics.application.subscribers.M;
 import bgu.spl.mics.application.subscribers.Moneypenny;
 import bgu.spl.mics.application.subscribers.Q;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -31,7 +30,7 @@ public class MI6Runner {
         try (Reader reader = new FileReader(args[0])) {
 
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            System.out.println(jsonObject);
+//            System.out.println(jsonObject);
 
             //setting up of the inventory
             List<String> gadgets= new LinkedList<String>();
