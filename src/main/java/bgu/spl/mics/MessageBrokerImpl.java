@@ -23,7 +23,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	Map<Subscriber, BlockingQueue<Message>> Subscribers;
 	private MessageBrokerImpl()
 	{
-		Topic = new ConcurrentHashMap<>();
+		Topic = new HashMap<>();
 		futures = new ConcurrentHashMap<>();
 		Subscribers = new ConcurrentHashMap<>();
 	}
@@ -39,15 +39,17 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
 		BlockingQueue<Subscriber> Subs;
-		if (Topic.get(type) != null) {
-			Subs = Topic.get(type);
-			Subs.add(m);
-		}
-		else
-		{
-			Subs = new LinkedBlockingQueue<Subscriber>();
-			Subs.offer(m);
-			Topic.put(type, Subs);
+		synchronized (Topic) {
+			if (Topic.get(type) != null) {
+				System.out.println("subscribing OLD, event type : " + type.getName() + "subscriber :" + m.getName());
+				Subs = Topic.get(type);
+				Subs.add(m);
+			} else {
+				System.out.println("subscribing NEW , event type : " + type.getName() + "subscriber :" + m.getName());
+				Subs = new LinkedBlockingQueue<Subscriber>();
+				Subs.offer(m);
+				Topic.put(type, Subs);
+			}
 		}
 
 	}
@@ -55,16 +57,18 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
 		BlockingQueue<Subscriber> Subs;
-		if (Topic.get(type) != null) {
-			Subs = Topic.get(type);
-			Subs.add(m);
-		}
-		else
-		{
-			Subs = new LinkedBlockingQueue<Subscriber>();
-			Subs.offer(m);
+		synchronized (Topic) {
+			if (Topic.get(type) != null) {
+				System.out.println("subscribing OLD, broadcast type : " + type.getName() + "subscriber :" + m.getName());
+				Subs = Topic.get(type);
+				Subs.add(m);
+			} else {
+				System.out.println("subscribing NEW , broadcast type : " + type.getName() + "subscriber :" + m.getName());
+				Subs = new LinkedBlockingQueue<Subscriber>();
+				Subs.offer(m);
 				Topic.put(type, Subs);
-	}
+			}
+		}
 
 	}
 

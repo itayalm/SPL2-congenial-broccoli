@@ -28,6 +28,8 @@ public class M extends Subscriber {
 			@Override
 			public void call(TickBroadcast c) {
 				timeTick = c.getTickCount();
+				System.out.println("Tick count: "+c.getTickCount());
+
 			}
 		});
 		this.subscribeEvent(MissionRecievedEvent.class, new Callback<MissionRecievedEvent>() {
