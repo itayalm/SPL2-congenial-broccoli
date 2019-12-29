@@ -86,10 +86,10 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public void sendBroadcast(Broadcast b) {
-		if (Topic.get(b) != null) {
+	public synchronized void sendBroadcast(Broadcast b) {
+		if (Topic.get(b.getClass()) != null) {
 			for (Subscriber s :
-					Topic.get(b)) {
+					Topic.get(b.getClass())) {
 				Subscribers.get(s).offer(b);
 			}
 		}
@@ -102,8 +102,8 @@ public class MessageBrokerImpl implements MessageBroker {
 		Future<T> f;
 		if (Topic.get(e).isEmpty() != true) {
 			try {
-				Subscriber s = Topic.get(e).take();
-				Topic.get(e).offer(s);
+				Subscriber s = Topic.get(e.getClass()).take();
+				Topic.get(e.getClass()).offer(s);
 				Subscribers.get(s).offer(e);
 				f = futures.get(e);
 				return f;

@@ -135,7 +135,7 @@ public abstract class Subscriber extends RunnableSubPub {
                 e.printStackTrace();
             }
         }
-        broker.unregister(this);
+//        broker.unregister(this);
     }
 
 }
