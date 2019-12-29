@@ -46,16 +46,6 @@ public class M extends Subscriber {
 				report.setTimeIssued(timeTick);
 				report.setGadgetName(info.getGadget());// maybe this should be the timeout get
 				Future<Trio<String, List<String>,Boolean>> agentFuture = getSimplePublisher().sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers(), info.getDuration(), canSendAgents));
-				Trio<String, List<String>, Boolean> trio = agentFuture.get(); // wait occurs here
-				System.out.println("after agentFuture.get");
-				if (!trio.getThird()) { // if the agent serial isnt right
-					diary.incrementTotal();
-					System.out.println("finished");
-					return;
-				}
-				System.out.println("setAgentNames");
-				report.setAgentsNames(trio.getSecond()); // maybe this should be the timeout get
-				report.setMoneypenny(Integer.parseInt(trio.getFirst().split(" ")[1]));
 				System.out.println("before qEvent");
 				Future<Pair<Integer, Boolean>> gadgetFuture = getSimplePublisher().sendEvent(new GadgetAvailableEvent(info.getGadget()));
 				if (gadgetFuture == null || !gadgetFuture.get().getSecond()) { // if the gadget name isnt right
@@ -73,6 +63,16 @@ public class M extends Subscriber {
 					return;
 				}
 				canSendAgents.resolve(true);
+				Trio<String, List<String>, Boolean> trio = agentFuture.get(); // wait occurs here
+				System.out.println("after agentFuture.get");
+				if (!trio.getThird()) { // if the agent serial isnt right
+					diary.incrementTotal();
+					System.out.println("finished");
+					return;
+				}
+				System.out.println("setAgentNames");
+				report.setAgentsNames(trio.getSecond()); // maybe this should be the timeout get
+				report.setMoneypenny(Integer.parseInt(trio.getFirst().split(" ")[1]));
 				System.out.println("finished");
 				diary.addReport(report);
 			}

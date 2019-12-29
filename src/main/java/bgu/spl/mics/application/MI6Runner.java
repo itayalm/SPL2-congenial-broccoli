@@ -155,7 +155,7 @@ public class MI6Runner {
             diary.printToFile(args[2]);
 
 
-            System.out.println("baba bubu");
+            System.out.println("baba bubu " + ii);
 
         }
         catch (IOException e) {
