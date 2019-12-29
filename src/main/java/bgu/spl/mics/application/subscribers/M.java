@@ -36,6 +36,7 @@ public class M extends Subscriber {
 
 			@Override
 			public void call(MissionRecievedEvent c) {
+				System.out.println("asd");
 				Report report = new Report();//create Report
 				MissionInfo info = c.getInfo();
 				long start = System.currentTimeMillis();

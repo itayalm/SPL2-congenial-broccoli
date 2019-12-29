@@ -90,6 +90,8 @@ public class MessageBrokerImpl implements MessageBroker {
 		if (Topic.get(b.getClass()) != null) {
 			for (Subscriber s :
 					Topic.get(b.getClass())) {
+
+//				System.out.println("Sending Broadcast: "+b);
 				Subscribers.get(s).offer(b);
 			}
 		}
@@ -100,7 +102,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public synchronized <T> Future<T> sendEvent(Event<T> e) {
 		Future<T> f;
-		if (Topic.get(e).isEmpty() != true) {
+		if (Topic.get(e.getClass()).isEmpty() != true) {
 			try {
 				Subscriber s = Topic.get(e.getClass()).take();
 				Topic.get(e.getClass()).offer(s);

@@ -129,6 +129,7 @@ public abstract class Subscriber extends RunnableSubPub {
             try {
                 Message Mes = broker.awaitMessage(this); //CMNT is it okay to send "this"?
                 Callback cb = callbacksMap.get(Mes);
+                System.out.println(this.getName()+"  Message: "+Mes);
                 cb.call(Mes);//CMNT is this the parameter we want to send?
 
             } catch (InterruptedException e) {
