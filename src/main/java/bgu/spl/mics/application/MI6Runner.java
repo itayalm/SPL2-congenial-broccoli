@@ -126,7 +126,7 @@ public class MI6Runner {
                 for (Thread tread : intels) {
                     tread.join();
                 }
-                //M threads.
+//                M threads.
                 for(Thread tread : ms){
                     tread.join();
                 }

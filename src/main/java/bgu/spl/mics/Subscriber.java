@@ -29,7 +29,6 @@ public abstract class Subscriber extends RunnableSubPub {
     public Subscriber(String name) {
         super(name);
         MessageBroker mb = MessageBrokerImpl.getInstance();
-        mb.register(this);
         callbacksMap = new HashMap<>();
     }
 
