@@ -49,7 +49,7 @@ public class Moneypenny extends Subscriber {
 			public void call(TerminateBroadcast c) {
 				terminate();
 			}
-		});s
+		});
 		
 	}
 
