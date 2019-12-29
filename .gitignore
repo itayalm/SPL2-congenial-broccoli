@@ -34,7 +34,6 @@
 
 #stuuuuf and .idea
 .idea/
-pom.xml
 src/main/main.iml
 src/test/test.iml
 
