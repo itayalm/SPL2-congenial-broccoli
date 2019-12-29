@@ -99,9 +99,10 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public synchronized <T> Future<T> sendEvent(Event<T> e) {
-		Future<T> f;
+		Future<T> f = new Future<>();
 		if (Topic.get(e.getClass()).isEmpty() != true) {
 			try {
+				futures.put(e,f);
 				Subscriber s = Topic.get(e.getClass()).take();
 				Topic.get(e.getClass()).offer(s);
 				Subscribers.get(s).offer(e);
@@ -119,8 +120,9 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void register(Subscriber m) {
 		if (m != null) {
-			if (Subscribers.get(m) == null)
+			if (Subscribers.get(m) == null) {
 				Subscribers.put(m, new LinkedBlockingQueue<Message>());
+			}
 		}
 	}
 
