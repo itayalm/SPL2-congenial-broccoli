@@ -116,9 +116,19 @@ public class MI6Runner {
             qt.start();
 
             try {
-                Thread.sleep(1000);
+                qt.join();
+                for (Thread tread : intels) {
+                    tread.join();
+                }
+                for(Thread tread : ms){
+                    tread.join();
+                }
+                for(Thread tread : mnpns){
+                    tread.join();
+                }
+
             }
-            catch (InterruptedException e){}
+            catch (InterruptedException e){e.printStackTrace();}
             Inventory inventory = Inventory.getInstance();
             inventory.printToFile(args[1]);
 
