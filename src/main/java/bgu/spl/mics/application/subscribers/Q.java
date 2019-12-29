@@ -4,6 +4,7 @@ import bgu.spl.mics.Callback;
 import bgu.spl.mics.Pair;
 import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.messages.GadgetAvailableEvent;
+import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.messages.TickBroadcast;
 import bgu.spl.mics.application.passiveObjects.Inventory;
 
@@ -38,7 +39,12 @@ public class Q extends Subscriber {
 				complete(c, new Pair<Integer, Boolean>(timeTick, available));
 			}
 		});
-		
+		this.subscribeBroadcast(TerminateBroadcast.class, new Callback<TerminateBroadcast>() {
+			@Override
+			public void call(TerminateBroadcast c) {
+				terminate();
+			}
+		});
 	}
 
 }

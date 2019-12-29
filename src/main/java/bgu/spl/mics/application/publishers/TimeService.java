@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.publishers;
 
 import bgu.spl.mics.Publisher;
+import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.messages.TickBroadcast;
 
 import java.util.Timer;
@@ -30,12 +31,12 @@ public class TimeService extends Publisher {
 
 
 	@Override
-	protected void initialize() {
-	}
+	protected void initialize() { }
 
 	@Override
 	public void run() {
 		timer.scheduleAtFixedRate(task,0,100);
+		getSimplePublisher().sendBroadcast(new TerminateBroadcast());
 
 	}
 

@@ -4,6 +4,7 @@ import bgu.spl.mics.Callback;
 import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.Trio;
 import bgu.spl.mics.application.messages.AgentsAvailableEvent;
+import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.passiveObjects.Squad;
 
 import java.util.List;
@@ -43,6 +44,12 @@ public class Moneypenny extends Subscriber {
 				complete(c, t);
 			}
 		});
+		this.subscribeBroadcast(TerminateBroadcast.class, new Callback<TerminateBroadcast>() {
+			@Override
+			public void call(TerminateBroadcast c) {
+				terminate();
+			}
+		});s
 		
 	}
 
