@@ -37,6 +37,8 @@ public class Intelligence extends Subscriber {
 		this.subscribeBroadcast(TickBroadcast.class, new Callback<TickBroadcast>() {
 			@Override
 			public void call(TickBroadcast c) {
+				ticks = c.getTickCount();
+
 				for (MissionInfo m : infoList)
 				{
 					if (m.getTimeIssued() == ticks)
@@ -44,7 +46,6 @@ public class Intelligence extends Subscriber {
 						getSimplePublisher().sendEvent(new MissionRecievedEvent(m));
 					}
 				}
-				ticks = c.getTickCount();
 
 			}
 		});
