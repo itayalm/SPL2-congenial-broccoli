@@ -110,6 +110,7 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     protected final void terminate() {
         this.terminated = true;
+        MessageBrokerImpl.getInstance().unregister(this);
     }
 
     /**

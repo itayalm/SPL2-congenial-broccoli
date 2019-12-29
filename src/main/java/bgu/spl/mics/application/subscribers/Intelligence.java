@@ -48,6 +48,12 @@ public class Intelligence extends Subscriber {
 
 			}
 		});
+		this.subscribeBroadcast(TerminateBroadcast.class, new Callback<TerminateBroadcast>() {
+			@Override
+			public void call(TerminateBroadcast c) {
+				terminate();
+			}
+		});
 
 	}
 

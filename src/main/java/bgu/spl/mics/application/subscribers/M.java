@@ -67,6 +67,12 @@ public class M extends Subscriber {
 				diary.addReport(report);
 			}
 		});
+		this.subscribeBroadcast(TerminateBroadcast.class, new Callback<TerminateBroadcast>() {
+			@Override
+			public void call(TerminateBroadcast c) {
+				terminate();
+			}
+		});
 
 	}
 
