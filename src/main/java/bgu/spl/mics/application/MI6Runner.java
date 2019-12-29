@@ -67,7 +67,7 @@ public class MI6Runner {
             for(int i=0; i<num_of_Ms; i++){
                 M m = new M("M- "+i);
                 ms[i] = new Thread(m);
-                ms[i].start();
+                System.out.println(ms[i].getName()+" is "+m.getName());
             }
             //setting up MoneyPennies
             long num_of_MoneyPenny = (Long) services.get("Moneypenny");
@@ -75,7 +75,7 @@ public class MI6Runner {
             for(int i=0; i<num_of_MoneyPenny; i++){
                 Moneypenny mnpn = new Moneypenny("MNPN- "+i);
                 mnpns[i] = new Thread(mnpn);
-                mnpns[i].start();
+                System.out.println(mnpns[i].getName()+" is "+mnpn.getName());
             }
 
 
@@ -107,16 +107,26 @@ public class MI6Runner {
                     intel.addMissionInfo(missionInfos[j]);
                 }
                 intels[i] = new Thread(intel);
-                intels[i].start();
+                System.out.println(intels[i].getName() +" is "+ intel.getName());
             }
             TimeService t = new TimeService("Time-Service- 1", ((Long)services.get("time")).intValue());
             Thread tt = new Thread(t);
-            tt.start();
             //setting up of Q;
             Q q = new Q("Q- 1");
             Thread qt = new Thread(q);
+            System.out.println(tt.getName()+" is "+t.getName());
+            System.out.println(qt.getName()+" is "+q.getName());
             qt.start();
-
+            for(Thread tread: mnpns){
+                tread.start();
+            }
+            for(Thread tread: ms){
+                tread.start();
+            }
+            for(Thread tread: intels){
+                tread.start();
+            }
+            tt.start();
             try {
                 //TimeService Thread.
                 tt.join();
