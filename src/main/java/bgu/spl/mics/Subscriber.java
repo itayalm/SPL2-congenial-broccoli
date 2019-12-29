@@ -85,7 +85,6 @@ public abstract class Subscriber extends RunnableSubPub {
         //CMNT should we check if the event was already subscribed to?
         MessageBroker broker = MessageBrokerImpl.getInstance();
         broker.subscribeBroadcast(type, this); //CMNT is it okay to send "this"?
-
         callbacksMap.put(type, callback);
     }
 
@@ -128,8 +127,7 @@ public abstract class Subscriber extends RunnableSubPub {
         while (!terminated) {
             try {
                 Message Mes = broker.awaitMessage(this); //CMNT is it okay to send "this"?
-                Callback cb = callbacksMap.get(Mes);
-                System.out.println(this.getName()+"  Message: "+Mes );
+                Callback cb = callbacksMap.get(Mes.getClass());
                 cb.call(Mes);//CMNT is this the parameter we want to send?
 
             } catch (InterruptedException e) {

@@ -31,13 +31,18 @@ public class TimeService extends Publisher {
 
 
 	@Override
-	protected void initialize() { }
+	protected void initialize() {
+		System.out.println("duration = " + duration);
+	}
 
 	@Override
 	public void run() {
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		timer.scheduleAtFixedRate(task,0,100);
-		getSimplePublisher().sendBroadcast(new TerminateBroadcast());
-
 	}
 
 }

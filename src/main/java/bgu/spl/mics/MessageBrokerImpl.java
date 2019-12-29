@@ -59,11 +59,9 @@ public class MessageBrokerImpl implements MessageBroker {
 		BlockingQueue<Subscriber> Subs;
 		synchronized (Topic) {
 			if (Topic.get(type) != null) {
-				System.out.println("subscribing OLD, broadcast type : " + type.getName() + "subscriber :" + m.getName());
 				Subs = Topic.get(type);
 				Subs.add(m);
 			} else {
-				System.out.println("subscribing NEW , broadcast type : " + type.getName() + "subscriber :" + m.getName());
 				Subs = new LinkedBlockingQueue<Subscriber>();
 				Subs.offer(m);
 				Topic.put(type, Subs);

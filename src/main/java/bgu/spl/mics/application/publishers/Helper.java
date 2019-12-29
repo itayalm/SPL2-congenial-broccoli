@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.publishers;
 import bgu.spl.mics.MessageBroker;
 import bgu.spl.mics.MessageBrokerImpl;
+import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.messages.TickBroadcast;
 
 import java.util.LinkedList;
@@ -21,7 +22,12 @@ public class Helper extends TimerTask{
     public void run() {
         if (tickNum < duration) {
             mb.sendBroadcast(new TickBroadcast(tickNum));
+            System.out.println(tickNum);
             tickNum++;
+        }
+        else {
+            mb.sendBroadcast(new TerminateBroadcast());
+            this.cancel();
         }
     }
 

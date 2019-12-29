@@ -16,10 +16,12 @@ import java.util.List;
 public class M extends Subscriber {
 	private Diary diary;
 	private int timeTick;
+	private int serialNumber;
 	public M(String name) {
 		super(name);
 		timeTick = 0;
 		diary = Diary.getInstance();
+		serialNumber = Integer.parseInt(name.split(" ")[1]);
 	}
 
 	@Override
@@ -28,21 +30,17 @@ public class M extends Subscriber {
 			@Override
 			public void call(TickBroadcast c) {
 				timeTick = c.getTickCount();
-				System.out.println("Tick count: "+c.getTickCount());
-
 			}
 		});
 		this.subscribeEvent(MissionRecievedEvent.class, new Callback<MissionRecievedEvent>() {
-
 			@Override
 			public void call(MissionRecievedEvent c) {
-				System.out.println("asd");
 				Report report = new Report();//create Report
 				MissionInfo info = c.getInfo();
 				long start = System.currentTimeMillis();
 				report.setTimeIssued(timeTick);
 				report.setMissionName(info.getMissionName());
-				report.setM(Integer.parseInt(getName()));
+				report.setM(serialNumber);
 				report.setAgentsSerialNumbers(info.getSerialAgentsNumbers());
 				report.setTimeIssued(timeTick);
 				report.setGadgetName(info.getGadget());// maybe this should be the timeout get
