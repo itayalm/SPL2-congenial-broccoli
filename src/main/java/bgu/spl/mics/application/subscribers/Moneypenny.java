@@ -35,13 +35,17 @@ public class Moneypenny extends Subscriber {
 				List<String> names;
 				synchronized(this) { // so several instances wont access the squad simultaneously
 					b = squad.getAgents(serial);
-					if (b) {
+					System.out.println((c.getCanSendAgents() == null) + " ");
+					if (b && c.getCanSendAgents().get()) {
 						squad.sendAgents(serial, duration);
 					}
+					else
+						squad.releaseAgents(serial);
 					names = squad.getAgentsNames(serial);
 				}
 				Trio<String, List<String>, Boolean> t = new Trio(getName(), names, b);
 				complete(c, t);
+
 			}
 		});
 		this.subscribeBroadcast(TerminateBroadcast.class, new Callback<TerminateBroadcast>() {

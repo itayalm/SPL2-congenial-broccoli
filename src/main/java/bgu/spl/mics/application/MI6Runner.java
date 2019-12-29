@@ -26,7 +26,8 @@ import java.util.List;
 public class MI6Runner {
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
-
+        for (int ii = 0 ; ii < 1 ; ii++)
+        {
         try (Reader reader = new FileReader(args[0])) {
 
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
@@ -79,7 +80,7 @@ public class MI6Runner {
             }
 
 
-            //setting up of intellgence;
+            //setting up of intelligence;
 
             JSONArray intelArray = (JSONArray) services.get("intelligence");
             Thread[] intels = new Thread[intelArray.size()];
@@ -162,6 +163,6 @@ public class MI6Runner {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        }
     }
 }

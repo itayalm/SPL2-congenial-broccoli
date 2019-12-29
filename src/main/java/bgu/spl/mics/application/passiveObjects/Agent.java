@@ -10,7 +10,7 @@ public class Agent {
 
 	private String serialNumber;
 	private String name;
-	private boolean available;
+	private boolean available = true;
 	/**
 	 * Sets the serial number of an agent.
 	 */

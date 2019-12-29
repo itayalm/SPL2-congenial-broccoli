@@ -71,14 +71,17 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public boolean getAgents(List<String> serials){
+	public synchronized boolean getAgents(List<String> serials){
 		Agent currAgent;
 		for(String ser: serials){
 			currAgent = this.agents.get(ser);
 			if(currAgent == null){
+				System.out.println("false");
 				return false;
+
 			}
 			currAgent.acquire();
+			System.out.println("acquire");
 		}
 		return true;
 	}
@@ -91,7 +94,8 @@ public class Squad {
     public List<String> getAgentsNames(List<String> serials){
         List<String> namesList = new LinkedList<String>();
         for(String ser: serials){
-        	namesList.add(this.agents.get(ser).getName());
+        	if (agents.get(ser) != null)
+        		namesList.add(this.agents.get(ser).getName());
 		}
         return namesList;
     }

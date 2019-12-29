@@ -41,11 +41,9 @@ public class MessageBrokerImpl implements MessageBroker {
 		BlockingQueue<Subscriber> Subs;
 		synchronized (Topic) {
 			if (Topic.get(type) != null) {
-				System.out.println("subscribing OLD, event type : " + type.getName() + "subscriber :" + m.getName());
 				Subs = Topic.get(type);
 				Subs.add(m);
 			} else {
-				System.out.println("subscribing NEW , event type : " + type.getName() + "subscriber :" + m.getName());
 				Subs = new LinkedBlockingQueue<Subscriber>();
 				Subs.offer(m);
 				Topic.put(type, Subs);
@@ -73,13 +71,17 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public <T> void complete(Event<T> e, T result) {
 		Future<T> f;
+		System.out.println("entering complete");
+
 		try
 		{
+			System.out.println("before get");
 			f = futures.get(e);
+			System.out.println("before resolve");
 			f.resolve(result);
+			System.out.println("resolved");
 		}
-		catch (Exception ex)
-		{}
+		catch (Exception ex) {}
 
 	}
 
@@ -106,6 +108,7 @@ public class MessageBrokerImpl implements MessageBroker {
 				Subscriber s = Topic.get(e.getClass()).take();
 				Topic.get(e.getClass()).offer(s);
 				Subscribers.get(s).offer(e);
+				System.out.println("sub name " +s.getName() + " Event : "+ e.getClass());
 				f = futures.get(e);
 				return f;
 			}

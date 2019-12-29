@@ -59,13 +59,15 @@ public class Inventory {
 	public boolean getItem(String gadget){
 
 			for (String s : gadgets) {
-				if (s == gadget) {
+				if (s.equals(gadget)) {
 					gadgets.remove(s);
+					System.out.println(gadgets.toString() +  " ");
 					return true;
 				}
+				else
+					return false;
 			}
 			return false;
-
 	}
 
 	/**

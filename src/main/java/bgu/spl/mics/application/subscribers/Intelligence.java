@@ -41,7 +41,7 @@ public class Intelligence extends Subscriber {
 
 				for (MissionInfo m : infoList)
 				{
-					if (m.getTimeIssued() == ticks)
+					if (m.getTimeIssued() == ticks && ticks < m.getDuration())
 					{
 						getSimplePublisher().sendEvent(new MissionRecievedEvent(m));
 					}
