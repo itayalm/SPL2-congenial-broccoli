@@ -110,19 +110,27 @@ public class MI6Runner {
                 intels[i].start();
             }
             TimeService t = new TimeService("Time-Service- 1", ((Long)services.get("time")).intValue());
+            Thread tt = new Thread(t);
+            tt.start();
             //setting up of Q;
             Q q = new Q("Q- 1");
             Thread qt = new Thread(q);
             qt.start();
 
             try {
+                //TimeService Thread.
+                tt.join();
+                //Q Thread.
                 qt.join();
+                //Inteligence Thread.
                 for (Thread tread : intels) {
                     tread.join();
                 }
+                //M threads.
                 for(Thread tread : ms){
                     tread.join();
                 }
+                //MoneyPenny threads.
                 for(Thread tread : mnpns){
                     tread.join();
                 }
