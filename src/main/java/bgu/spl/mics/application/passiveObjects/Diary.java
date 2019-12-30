@@ -53,7 +53,7 @@ public class Diary {
 	 * adds a report to the diary
 	 * @param reportToAdd - the report to add
 	 */
-	public void addReport(Report reportToAdd){
+	public synchronized void addReport(Report reportToAdd){
 		while(!lock.compareAndSet(false, true));
 		try {
 			reports.add(reportToAdd);
@@ -111,14 +111,14 @@ public class Diary {
 		}
 	}
 
-	public void incrementTotal(){
-		while(!lock.compareAndSet(false,true));
-		try {
+	public synchronized void incrementTotal(){
+//		while(!lock.compareAndSet(false,true));
+//		try {
 			total++;
-		}
-		finally {
-			lock.set(false);
-		}
+//		}
+//		finally {
+//			lock.set(false);
+//		}
 	}
 
 	/**

@@ -22,8 +22,9 @@ public class Helper extends TimerTask{
     public void run() {
         if (tickNum < duration) {
             mb.sendBroadcast(new TickBroadcast(tickNum));
-            System.out.println(tickNum);
             tickNum++;
+            System.out.println(tickNum);
+
         }
         else {
             mb.sendBroadcast(new TerminateBroadcast());

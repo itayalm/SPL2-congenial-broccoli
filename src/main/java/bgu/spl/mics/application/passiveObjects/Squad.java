@@ -49,7 +49,8 @@ public class Squad {
 	 */
 	public void releaseAgents(List<String> serials){
 		for(String ser: serials){
-			this.agents.get(ser).release();
+			if (agents.get(ser) != null)
+				this.agents.get(ser).release();
 		}
 	}
 
@@ -76,12 +77,12 @@ public class Squad {
 		for(String ser: serials){
 			currAgent = this.agents.get(ser);
 			if(currAgent == null){
-				System.out.println("false");
+				System.out.println("wrong serial");
 				return false;
 
 			}
 			currAgent.acquire();
-			System.out.println("acquire");
+			System.out.println("acquire agents");
 		}
 		return true;
 	}

@@ -26,6 +26,7 @@ public class Intelligence extends Subscriber {
 	{
 		this(name);
 		this.infoList = infoList;
+
 	}
 	public void addMissionInfo(MissionInfo info)
 	{
@@ -38,15 +39,16 @@ public class Intelligence extends Subscriber {
 			@Override
 			public void call(TickBroadcast c) {
 				ticks = c.getTickCount();
-
+				if (infoList.isEmpty())
+					getSimplePublisher().sendBroadcast(new TerminateBroadcast());
 				for (MissionInfo m : infoList)
 				{
-					if (m.getTimeIssued() == ticks && ticks < m.getDuration())
+					if (m.getTimeIssued() == ticks && ticks < m.getTimeExpired())
 					{
+						System.out.println("Mission Name : " + m.getMissionName());
 						getSimplePublisher().sendEvent(new MissionRecievedEvent(m));
 					}
 				}
-
 			}
 		});
 		this.subscribeBroadcast(TerminateBroadcast.class, new Callback<TerminateBroadcast>() {

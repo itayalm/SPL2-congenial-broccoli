@@ -48,6 +48,7 @@ public class Inventory {
 		for(String s: inventory){
 			gadgets.add(s);
 		}
+		System.out.println(gadgets.toString());
 	}
 
 	/**
@@ -64,8 +65,6 @@ public class Inventory {
 					System.out.println(gadgets.toString() +  " ");
 					return true;
 				}
-				else
-					return false;
 			}
 			return false;
 	}

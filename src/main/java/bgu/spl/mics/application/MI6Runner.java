@@ -13,6 +13,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ import java.util.List;
 public class MI6Runner {
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
-        for (int ii = 0 ; ii < 1 ; ii++)
+        for (int ii = 0 ; ii < 5; ii++)
         {
         try (Reader reader = new FileReader(args[0])) {
 
