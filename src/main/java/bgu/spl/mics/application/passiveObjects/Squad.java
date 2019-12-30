@@ -77,12 +77,12 @@ public class Squad {
 		for(String ser: serials){
 			currAgent = this.agents.get(ser);
 			if(currAgent == null){
-				System.out.println("wrong serial");
+//				System.out.println("wrong serial");
 				return false;
 
 			}
 			currAgent.acquire();
-			System.out.println("acquire agents");
+//			System.out.println("acquire agents");
 		}
 		return true;
 	}

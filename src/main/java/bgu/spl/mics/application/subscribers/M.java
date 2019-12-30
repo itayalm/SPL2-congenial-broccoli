@@ -47,36 +47,36 @@ public class M extends Subscriber {
 				report.setAgentsSerialNumbers(info.getSerialAgentsNumbers());
 				report.setTimeIssued(timeTick);
 				report.setGadgetName(info.getGadget());// maybe this should be the timeout get
-				System.out.println("sending agents available event");
+//				System.out.println("sending agents available event");
 				Future<Trio<String, List<String>, Boolean>> agentFuture = getSimplePublisher().sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers(), info.getDuration(), canSendAgents));
 				if (agentFuture == null) {
-					System.out.println("Agent Future is terminating, mission : " + c.getInfo().getMissionName());
+//					System.out.println("Agent Future is terminating, mission : " + c.getInfo().getMissionName());
 					terminate();
 					return;
 				}
-				System.out.println("resolving agents future ");
+//				System.out.println("resolving agents future ");
 				canSendAgents.resolve(true);
-				System.out.println("getting agent Future , mission : " + c.getInfo().getMissionName());
+//				System.out.println("getting agent Future , mission : " + c.getInfo().getMissionName());
 				Trio<String, List<String>, Boolean> trio = agentFuture.get(); // wait occurs here
 
-				System.out.println("after agentFuture.get , mission : " + c.getInfo().getMissionName());
+//				System.out.println("after agentFuture.get , mission : " + c.getInfo().getMissionName());
 				if (!trio.getThird()) { // if the agent serial isn't right
-					System.out.println("agent serial ain't right , , mission : " + c.getInfo().getMissionName());
+//					System.out.println("agent serial ain't right , , mission : " + c.getInfo().getMissionName());
 					return;
 				}
-				System.out.println("setAgentNames , , mission : s" + c.getInfo().getMissionName());
+//				System.out.println("setAgentNames , , mission : s" + c.getInfo().getMissionName());
 				report.setAgentsNames(trio.getSecond()); // maybe this should be the timeout get
 				report.setMoneypenny(Integer.parseInt(trio.getFirst().split(" ")[1]));
-				System.out.println("before calling GadgetAvailableEvent");
+//				System.out.println("before calling GadgetAvailableEvent");
 				Future<Pair<Integer, Boolean>> gadgetFuture = getSimplePublisher().sendEvent(new GadgetAvailableEvent(info.getGadget()));
 				if (gadgetFuture == null) {
-					System.out.println("Gadget Future is terminating, mission : " + c.getInfo().getMissionName());
+//					System.out.println("Gadget Future is terminating, mission : " + c.getInfo().getMissionName());
 					terminate();
 					return;
 				}
 
 				if (!gadgetFuture.get().getSecond()) { // if the gadget name isnt right
-					System.out.println("gadget name ain't right , mission : " + c.getInfo().getMissionName());
+//					System.out.println("gadget name ain't right , mission : " + c.getInfo().getMissionName());
 					return;
 				}
 				int qTime = gadgetFuture.get().getFirst();
@@ -84,10 +84,10 @@ public class M extends Subscriber {
 				int elapsed = (int) (System.currentTimeMillis() - start) / 100;
 				timeTick = timeTick + elapsed;
 				if (timeTick > info.getTimeExpired()) {
-					System.out.println("time passed expired , mission : " + c.getInfo().getMissionName());
+//					System.out.println("time passed expired , mission : " + c.getInfo().getMissionName());
 					return;
 				}
-				System.out.println("added report , mission : " + c.getInfo().getMissionName());
+//				System.out.println("added report , mission : " + c.getInfo().getMissionName());
 				diary.addReport(report);
 			}
 		});

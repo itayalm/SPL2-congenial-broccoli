@@ -23,7 +23,7 @@ public class Helper extends TimerTask{
         if (tickNum < duration) {
             mb.sendBroadcast(new TickBroadcast(tickNum));
             tickNum++;
-            System.out.println(tickNum);
+//            System.out.println(tickNum);
 
         }
         else {

@@ -13,7 +13,6 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
@@ -27,12 +26,12 @@ import java.util.List;
 public class MI6Runner {
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
-        for (int ii = 0 ; ii < 5; ii++)
+        for (int ii = 0 ; ii < 1; ii++)
         {
         try (Reader reader = new FileReader(args[0])) {
 
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-//            System.out.println(jsonObject);
+////            System.out.println(jsonObject);
 
             //setting up of the inventory
             List<String> gadgets= new LinkedList<String>();
@@ -69,7 +68,7 @@ public class MI6Runner {
             for(int i=0; i<num_of_Ms; i++){
                 M m = new M("M- "+i);
                 ms[i] = new Thread(m);
-                System.out.println(ms[i].getName()+" is "+m.getName());
+//                System.out.println(ms[i].getName()+" is "+m.getName());
             }
             //setting up MoneyPennies
             long num_of_MoneyPenny = (Long) services.get("Moneypenny");
@@ -77,7 +76,7 @@ public class MI6Runner {
             for(int i=0; i<num_of_MoneyPenny; i++){
                 Moneypenny mnpn = new Moneypenny("MNPN- "+i);
                 mnpns[i] = new Thread(mnpn);
-                System.out.println(mnpns[i].getName()+" is "+mnpn.getName());
+//                System.out.println(mnpns[i].getName()+" is "+mnpn.getName());
             }
 
 
@@ -88,13 +87,13 @@ public class MI6Runner {
             for(int i=0; i<intelArray.size(); i++){
                 JSONObject object = (JSONObject) intelArray.get(i);
                 JSONArray missions = (JSONArray) object.get("missions");
-//                System.out.println(missions.toJSONString());
+////                System.out.println(missions.toJSONString());
                 Intelligence intel = new Intelligence("Intel- "+i);
                 MissionInfo[] missionInfos = new MissionInfo[missions.size()];
                 for(int j=0; j<missions.size(); j++){
                     missionInfos[j] = new MissionInfo();
                     JSONObject mission_json = (JSONObject) missions.get(j);
-//                    System.out.println(mission_json.get("name"));
+////                    System.out.println(mission_json.get("name"));
                     missionInfos[j].setMissionName((String) mission_json.get("name"));
                     JSONArray serial_agent_numbers_json =(JSONArray) mission_json.get("serialAgentsNumbers");
                     List<String> serial_agent_numbers = new LinkedList<String>();
@@ -109,15 +108,15 @@ public class MI6Runner {
                     intel.addMissionInfo(missionInfos[j]);
                 }
                 intels[i] = new Thread(intel);
-                System.out.println(intels[i].getName() +" is "+ intel.getName());
+//                System.out.println(intels[i].getName() +" is "+ intel.getName());
             }
             TimeService t = new TimeService("Time-Service- 1", ((Long)services.get("time")).intValue());
             Thread tt = new Thread(t);
             //setting up of Q;
             Q q = new Q("Q- 1");
             Thread qt = new Thread(q);
-            System.out.println(tt.getName()+" is "+t.getName());
-            System.out.println(qt.getName()+" is "+q.getName());
+//            System.out.println(tt.getName()+" is "+t.getName());
+//            System.out.println(qt.getName()+" is "+q.getName());
             qt.start();
             for(Thread tread: mnpns){
                 tread.start();
@@ -156,7 +155,7 @@ public class MI6Runner {
             diary.printToFile(args[2]);
 
 
-            System.out.println("baba bubu " + ii);
+//            System.out.println("baba bubu " + ii);
 
         }
         catch (IOException e) {

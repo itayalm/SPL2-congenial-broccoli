@@ -45,7 +45,7 @@ public class Intelligence extends Subscriber {
 				{
 					if (m.getTimeIssued() == ticks && ticks < m.getTimeExpired())
 					{
-						System.out.println("Mission Name : " + m.getMissionName());
+//						System.out.println("Mission Name : " + m.getMissionName());
 						getSimplePublisher().sendEvent(new MissionRecievedEvent(m));
 					}
 				}

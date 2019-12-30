@@ -48,7 +48,7 @@ public class Inventory {
 		for(String s: inventory){
 			gadgets.add(s);
 		}
-		System.out.println(gadgets.toString());
+//		System.out.println(gadgets.toString());
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class Inventory {
 			for (String s : gadgets) {
 				if (s.equals(gadget)) {
 					gadgets.remove(s);
-					System.out.println(gadgets.toString() +  " ");
+//					System.out.println(gadgets.toString() +  " ");
 					return true;
 				}
 			}

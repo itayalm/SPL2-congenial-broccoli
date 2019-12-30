@@ -35,8 +35,8 @@ public class Moneypenny extends Subscriber {
 				List<String> names;
 				synchronized(this) { // so several instances wont access the squad simultaneously
 					b = squad.getAgents(serial);
-					System.out.println(" can send agents is null " + (c.getCanSendAgents() == null));
-//					System.out.println(c.getCanSendAgents().get() + " is equal to ");
+//					System.out.println(" can send agents is null " + (c.getCanSendAgents() == null));
+////					System.out.println(c.getCanSendAgents().get() + " is equal to ");
 					names = squad.getAgentsNames(serial);
 					Trio<String, List<String>, Boolean> t = new Trio(getName(), names, b);
 					complete(c, t);

@@ -36,7 +36,7 @@ public class Q extends Subscriber {
 			public void call(GadgetAvailableEvent c) {
 				String gadgetNum = c.getId();
 				Boolean available = inven.getItem(gadgetNum);
-				System.out.println("got all the gadgets " + available + " gadget : " + c.getId());
+//				System.out.println("got all the gadgets " + available + " gadget : " + c.getId());
 				complete(c, new Pair<Integer, Boolean>(timeTick, available));
 			}
 		});

@@ -71,15 +71,15 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public <T> void complete(Event<T> e, T result) {
 		Future<T> f;
-		System.out.println("entering complete");
+//		System.out.println("entering complete");
 
 		try
 		{
-			System.out.println("before get");
+//			System.out.println("before get");
 			f = futures.get(e);
-			System.out.println("before resolve");
+//			System.out.println("before resolve");
 			f.resolve(result);
-			System.out.println("resolved");
+//			System.out.println("resolved");
 		}
 		catch (Exception ex) {}
 
@@ -91,7 +91,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			for (Subscriber s :
 					Topic.get(b.getClass())) {
 
-//				System.out.println("Sending Broadcast: "+b);
+////				System.out.println("Sending Broadcast: "+b);
 				Subscribers.get(s).offer(b);
 			}
 		}
@@ -108,7 +108,7 @@ public class MessageBrokerImpl implements MessageBroker {
 				Subscriber s = Topic.get(e.getClass()).take();
 				Topic.get(e.getClass()).offer(s);
 				Subscribers.get(s).offer(e);
-				System.out.println("sub name " +s.getName() + " Event : "+ e.getClass());
+//				System.out.println("sub name " +s.getName() + " Event : "+ e.getClass());
 				f = futures.get(e);
 				return f;
 			}
